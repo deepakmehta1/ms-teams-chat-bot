@@ -20,6 +20,9 @@ from botbuilder.schema import Activity, ActivityTypes
 from src.bots import AuthBot
 from config import DefaultConfig
 from src.dialogs import MainDialog
+from src.conversation.services.conversation_service import ConversationService
+from src.conversation.history.conversation_history import ConversationHistory
+from src.conversation.services.key_manager import KeyManager
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -31,7 +34,6 @@ ADAPTER = CloudAdapter(ConfigurationBotFrameworkAuthentication(CONFIG))
 
 # Catch-all for errors.
 async def on_error(context: TurnContext, error: Exception):
-
     logger.error(f"[on_turn_error] unhandled error: {error}", exc_info=True)
 
     # Send a message to the user
@@ -61,7 +63,11 @@ MEMORY = MemoryStorage()
 USER_STATE = UserState(MEMORY)
 CONVERSATION_STATE = ConversationState(MEMORY)
 
-DIALOG = MainDialog(CONFIG)
+KEY_MANAGER = KeyManager(CONFIG)
+CONVERSATION_HISTORY = ConversationHistory()
+CONVERSATION_SERVICE = ConversationService(KEY_MANAGER)
+
+DIALOG = MainDialog(CONFIG, CONVERSATION_HISTORY, CONVERSATION_SERVICE)
 
 BOT = AuthBot(CONVERSATION_STATE, USER_STATE, DIALOG)
 
@@ -69,14 +75,14 @@ BOT = AuthBot(CONVERSATION_STATE, USER_STATE, DIALOG)
 async def messages(req: Request) -> Response:
     logger.info(f"API called: {req.method} {req.path}")
     response = await ADAPTER.process(req, BOT)
-    if response:  
-        if response.body is None:  
-            args = {'status': response.status}  
-        else:  
-            args = {'data': response.body, 'status': response.status}  
-  
+    if response:
+        if response.body is None:
+            args = {"status": response.status}
+        else:
+            args = {"data": response.body, "status": response.status}
+
         return json_response(**args)
-    return Response(status=201) 
+    return Response(status=201)
 
 
 async def ping(req: Request) -> Response:

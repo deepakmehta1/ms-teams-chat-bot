@@ -6,6 +6,8 @@ from botbuilder.schema import CardAction, ActionTypes, SuggestedActions
 from config import DefaultConfig
 from src.dialogs.logout_dialog import LogoutDialog
 from src.services import Auth, User
+from src.conversation.services.conversation_service import ConversationService
+from src.conversation.history.conversation_history import ConversationHistory
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -15,14 +17,16 @@ class MainDialog(LogoutDialog):
     def __init__(
         self,
         config: DefaultConfig,
+        conversation_history: ConversationHistory,
+        conversation_service: ConversationService,
     ):
         """
         Initializes MainDialog with configuration and services.
         """
-        super(MainDialog, self).__init__(
-            MainDialog.__name__, config.CONNECTION_NAME
-        )
+        super(MainDialog, self).__init__(MainDialog.__name__, config.CONNECTION_NAME)
         self.config = config
+        self.conversation_history = conversation_history
+        self.conversation_service = conversation_service
 
         self._add_prompts_and_dialogs()
         self._setup_config_attributes()
@@ -41,7 +45,7 @@ class MainDialog(LogoutDialog):
             OAuthPrompt.__name__,
             OAuthPromptSettings(
                 connection_name=self.config.CONNECTION_NAME,
-                text="Welcome to Syntea, Please sign in to continue",
+                text="Please sign in to continue",
                 title="Sign In",
                 timeout=180000,
             ),
@@ -78,11 +82,11 @@ class MainDialog(LogoutDialog):
         """Processes successful login and handles conversation."""
         try:
             user = self._authenticate_user(step_context.result.token)
-            response_text, help_text = await self._execute_conversation(
+            response_text = await self._execute_conversation(
                 step_context, user
             )
-            await self._send_response_with_suggestions(
-                step_context, response_text, help_text
+            await self._send_response(
+                step_context, response_text
             )
             return await step_context.end_dialog()
 
@@ -99,18 +103,15 @@ class MainDialog(LogoutDialog):
         self, step_context: WaterfallStepContext, user: User
     ) -> tuple[str, list]:
         """Executes the conversation using the LLM flow service."""
-        # todo execute the conversation here 
-        pass 
+        return await self.conversation_service.process_message(
+            self.conversation_history, step_context.context.activity.text
+        )
 
-    async def _send_response_with_suggestions(
-        self, step_context: WaterfallStepContext, response_text: str, help_text: list
+    async def _send_response(
+        self, step_context: WaterfallStepContext, response_text: str
     ):
         """Sends the response with suggested actions to the user."""
         reply = MessageFactory.text(response_text)
-        actions = [
-            CardAction(title=ht, type=ActionTypes.im_back, value=ht) for ht in help_text
-        ]
-        reply.suggested_actions = SuggestedActions(actions=actions)
         await step_context.context.send_activity(reply)
 
     async def _handle_login_error(

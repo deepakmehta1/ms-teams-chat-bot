@@ -28,14 +28,8 @@ class AuthBot(DialogBot):
                 print("new member has been added!")
 
     async def on_sign_in_invoke(self, turn_context: TurnContext):
-        if (
-            await self.conversation_service.get_conversation_by_bot_conversation_id(
-                turn_context.activity.conversation.id
-            )
-            is None
-        ):
-            return await DialogHelper.run_dialog(
-                self.dialog,
-                turn_context,
-                self.conversation_state.create_property("DialogState"),
-            )
+        return await DialogHelper.run_dialog(
+            self.dialog,
+            turn_context,
+            self.conversation_state.create_property("DialogState"),
+        )

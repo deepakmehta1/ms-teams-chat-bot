@@ -23,3 +23,4 @@ class DefaultConfig:
     AUTH_AUDIENCE = config("AUTH0_AUDIENCE", "")
     AUTH_ISSUER = config("AUTH0_ISSUER", "")
     AUTH_ALGORITHM = config("AUTH0_ALGORITHM", "")
+    OPENAI_API_KEY = config("OPENAI_API_KEY", "")
