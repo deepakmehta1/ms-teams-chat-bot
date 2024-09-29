@@ -82,12 +82,8 @@ class MainDialog(LogoutDialog):
         """Processes successful login and handles conversation."""
         try:
             user = self._authenticate_user(step_context.result.token)
-            response_text = await self._execute_conversation(
-                step_context, user
-            )
-            await self._send_response(
-                step_context, response_text
-            )
+            response_text = await self._execute_conversation(step_context, user)
+            await self._send_response(step_context, response_text)
             return await step_context.end_dialog()
 
         except Exception as e:

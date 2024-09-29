@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   ms-teams-chat-bot:
     build:
@@ -7,6 +5,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3978:3978"
+    environment:
+      ADD_YOUR_ENV_VARS_HERE: 
     depends_on:
       - mongo
 

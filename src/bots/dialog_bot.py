@@ -2,6 +2,7 @@ from botbuilder.core import ActivityHandler, ConversationState, UserState, TurnC
 from botbuilder.dialogs import Dialog
 from src.helpers.dialog_helper import DialogHelper
 
+
 class DialogBot(ActivityHandler):
     def __init__(
         self,
