@@ -16,14 +16,13 @@ class DefaultConfig:
     """Bot Configuration"""
 
     PORT = 3978
-    APP_ID = '047c163b-876b-4401-9434-1f67a1c87173'
-    APP_PASSWORD = 'UJ58Q~fJNXf8FDMdGN_Lh6l5M8m6847tIe~qOa2k'
-    APP_TYPE = config("MicrosoftAppType", "MultiTenant")
-    APP_TENANTID = config("MicrosoftAppTenantId", "")
-    CONNECTION_NAME = config("ConnectionName", "test-connection")
-    AUTH_AUDIENCE = config("Auth0Audience", "")
-    AUTH_ISSUER = config("Auth0Issuer", "")
-    AUTH_ALGORITHM = config("Auth0Algorithm", "")
-    GCD_ORCH_TEMPLATE = config("OrchestrationTemplateID", "")
-    GCD_ORCH_TEMPLATE_VERSION = config("OrchestrationTemplateVersionID", "")
-    LLM_FLOW_SERVICE_URL = config("LLMFlowServiceURL", "")
+    APP_ID = config("MICROSOFT_APP_ID", "app_id")
+    APP_PASSWORD = config("MICROSOFT_APP_PASSWORD", "pwd")
+    APP_TYPE = config("MICROSOFT_APP_TYPE", "MultiTenant")
+    CONNECTION_NAME = config("CONNECTION_NAME", "test-connection")
+    AUTH_AUDIENCE = config("AUTH0_AUDIENCE", "")
+    AUTH_ISSUER = config("AUTH0_ISSUER", "")
+    AUTH_ALGORITHM = config("AUTH0_ALGORITHM", "")
+    GCD_ORCH_TEMPLATE = config("ORCHESTRATION_TEMPLATE_ID", "")
+    GCD_ORCH_TEMPLATE_VERSION = config("ORCHESTRATION_TEMPLATE_VERSION_ID", "")
+    LLM_FLOW_SERVICE_URL = config("LLM_FLOW_SERVICE_URL", "")
