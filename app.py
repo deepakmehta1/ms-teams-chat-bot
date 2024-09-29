@@ -75,7 +75,7 @@ async def messages(req: Request) -> Response:
         else:  
             args = {'data': response.body, 'status': response.status}  
   
-        return json_response(**args)  
+        return json_response(**args)
     return Response(status=201) 
 
 
@@ -92,7 +92,7 @@ APP.router.add_get("/health", ping)
 if __name__ == "__main__":
     try:
         logger.info("Starting the web server...")
-        web.run_app(APP, host="localhost", port=CONFIG.PORT)
+        web.run_app(APP, host="0.0.0.0", port=CONFIG.PORT)
     except Exception as error:
         logger.exception("Failed to start the server: %s", error)
         raise

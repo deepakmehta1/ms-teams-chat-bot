@@ -52,9 +52,6 @@ class MainDialog(LogoutDialog):
         self.auth0_issuer = self.config.AUTH_ISSUER
         self.auth0_audience = self.config.AUTH_AUDIENCE
         self.auth0_algorithm = self.config.AUTH_ALGORITHM
-        self.gcd_orch_template_id = self.config.GCD_ORCH_TEMPLATE
-        self.gcd_orch_template_version_id = self.config.GCD_ORCH_TEMPLATE_VERSION
-        self.llm_flow_service_url = self.config.LLM_FLOW_SERVICE_URL
         self.initial_dialog_id = "WFDialog"
 
     async def prompt_step(self, step_context: WaterfallStepContext) -> DialogTurnResult:

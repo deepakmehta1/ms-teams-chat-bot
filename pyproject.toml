@@ -1,4 +1,4 @@
-[project]
+[tool.poetry]
 name = "ms-teams-chat-bot"
 version = "0.0.0"
 description = "Teams Chat Bot"
@@ -6,24 +6,28 @@ readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3.11",
 ]
-requires-python = ">=3.11"
-dependencies = [
-    "botbuilder-integration-aiohttp>=4.15.0",
-    "botbuilder-dialogs>=4.15.0",
-    "pydantic==2.8.2",
-    "requests==2.32.3",
-    "pymongo==4.8.0",
-    "python-dotenv==1.0.1",
-    "motor==3.5.1",
-    "ddtrace>=2.6.2,<3.0.0",
-    "python-decouple==3.8",
-    "httpx==0.27.2",
-]
+authors = ["deepak.deep40@yahoo.com"]
+packages = [{ include = "src" }]
 
-[project.optional-dependencies]
-dev = [
-    "black==23.9.1",
-]
+[tool.poetry.dependencies]
+python = ">=3.11"
+botbuilder-integration-aiohttp = ">=4.15.0"
+botbuilder-dialogs = ">=4.15.0"
+pydantic = "2.8.2"
+requests = "2.32.3"
+pymongo = "4.8.0"
+python-dotenv = "1.0.1"
+motor = "3.5.1"
+ddtrace = ">=2.6.2,<3.0.0"
+python-decouple = "3.8"
+httpx = "0.27.2"
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.poetry.dev-dependencies]
+black = "23.9.1"
+
+[tool.poetry.extras]
+dev = ["black"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
