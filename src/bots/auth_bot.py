@@ -24,7 +24,7 @@ class AuthBot(DialogBot):
     ):
         for member in members_added:
             if member.id != turn_context.activity.recipient.id:
-                await turn_context.send_activity("Hello, welcome to Syntea 😊")
+                await turn_context.send_activity("Hello, welcome to Bot 😊")
                 print("new member has been added!")
 
     async def on_sign_in_invoke(self, turn_context: TurnContext):
